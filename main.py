@@ -28,7 +28,7 @@ def find_max(f, syms, h: float = 1e-3, eps: float = 1e-3):
 
 
 def main():
-    syms: str = input('Write independent variables to use separated spaces\n→ ')
+    syms: str = input('Write independent variables to use separated with spaces\n→ ')
     expr: str = input('Write function with python syntax\n→ ')
 
     try:
