@@ -1,0 +1,5 @@
+{
+    "*.py": {
+        "console": "python {}.py && read"
+    }
+}
