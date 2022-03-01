@@ -1,6 +1,6 @@
 ## Gradient descent with sympy
 
-Build with:
+Built with:
 - `python`
 - `sympy`
 
