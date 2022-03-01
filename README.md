@@ -13,7 +13,7 @@ pipenv run python main.py
 
 ### Sample input
 
-For dependent variables:
+For independent variables:
 - `x y`
 
 For function:
