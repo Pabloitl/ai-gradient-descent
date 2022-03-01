@@ -7,7 +7,8 @@ Build with:
 ## How to run
 
 ```sh
-python main.py
+pipenv install
+pipenv run python main.py
 ```
 
 ### Sample input
