@@ -12,8 +12,6 @@ def find_max(f, syms, h: float = 1e-3, eps: float = 1e-3):
     grad_f = lambdify(variables, derive_by_array(f, variables))
     result = Matrix([1] * len(variables))
 
-    print(grad_f)
-
     for _ in range(100):
         grad_value = Matrix(grad_f(*result))
 
@@ -21,8 +19,6 @@ def find_max(f, syms, h: float = 1e-3, eps: float = 1e-3):
             break
 
         result += grad_value * h
-
-        print(grad_value, grad_value.norm())
 
     return (result[0], result[1])
 
@@ -34,7 +30,7 @@ def main():
     try:
         f = parse_expr(expr)
 
-        print(f'\nResult → {find_max(f, syms, (1/4), .02)}')
+        print(f'\nResult → {find_max(f, syms)}')
     except Exception as _:
         print(f'\nCannot parse → "{expr}" (Check your input)')
 
