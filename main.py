@@ -1,60 +1,26 @@
-import re
-import random
-from sympy import (
-    symbols,
-    lambdify,
-    derive_by_array,
-    Matrix,
-    parse_expr
-)
-
-
-def find_max(f, syms, h: float = 1e-3, eps: float = 1e-3, iterations: int = 100, point: list[float] = None):
-    variables = symbols(syms)
-    grad_f = lambdify(variables, derive_by_array(f, variables))
-    result = Matrix([1] * len(variables))
-
-    if point is None or len(point) != len(variables):
-        print(f'\nInvalid point → "{point}", choosing a random one')
-        result = Matrix([random.randrange(-100, 100) for _ in range(len(variables))])
-    else:
-        result = Matrix(point)
-
-    print()
-    print(f'Starting at point {result}')
-
-    for _ in range(iterations):
-        grad_value = Matrix(grad_f(*result))
-
-        if grad_value.norm() < eps:
-            break
-
-        result += grad_value * h
-
-    return (result[0], result[1])
-
+from gradient_descent import follow_gradient
 
 def main():
-    syms: str = input('Write independent variables to use separated with spaces\n→ ')
-    expr: str = input('Write function with python syntax\n→ ')
-    start: str = input('Write point to start separated with spaces\n→ ')
+    minimize = input('To minimize input (-) otherwise maximize\n→ ') == '-'
+    variables = input('Write independent variables to use separated with spaces\n→ ')
+    f = input('Write function with python syntax\n→ ')
+    start = input('Write point to start separated with spaces\nprefix with "rand" to indicate a range of random values)\n→ ')
+    point, random = parse_point(start)
 
-    try:
-        f = parse_expr(expr)
+    starting_point, *result = follow_gradient(f, variables, point=point, random=random, minimize=minimize)
 
-        if not valid_start(start):
-            print(f'\nResult → {find_max(f, syms, iterations=10000)}')
-        else:
-            point = list(map(float, re.split(r'\s', start)))
+    print()
+    print(f'Starting at point → {starting_point}')
+    print(f'Result → {result}')
 
-            print(f'\nResult → {find_max(f, syms, iterations=10000, point=point)}')
-    except Exception as e:
-        print(f'\nSomething went wrong (Check your input)')
-        print(f'→ {e}')
 
-def valid_start(start: str) -> bool:
-    return re.match(r'^\d+(\s+\d+)+$', start) is not None
+def parse_point(point: str) -> tuple[list[float], bool]:
+    start: int = 1 if 'rand' in point else 0
 
+    return (list(map(float, point.split(' ')[start:])), start == 1)
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        print(f'\nSomething went wrong (Check your input)')
