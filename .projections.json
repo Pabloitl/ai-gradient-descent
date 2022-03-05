@@ -1,5 +1,5 @@
 {
-    "*.py": {
-        "console": "python {}.py && read"
+    "*": {
+        "console": "python main.py && read"
     }
 }
